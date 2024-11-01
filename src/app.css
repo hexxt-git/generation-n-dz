@@ -4,21 +4,21 @@
 
 @font-face {
     font-family: "Britanica";
-    src: url("Britanica Expanded Regular.ttf") format("truetype");
+    src: url("/Britanica Expanded Regular.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Britanica Bold";
-    src: url("Britanica Expanded Extra Bold.ttf") format("truetype");
+    src: url("/Britanica Expanded Extra Bold.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Britanica Thin";
-    src: url("Britanica Thin.ttf") format("truetype");
+    src: url("/Britanica Thin.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
