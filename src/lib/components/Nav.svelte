@@ -1,8 +1,6 @@
 <script lang="ts">
-    import { Drawer, Button, CloseButton } from "flowbite-svelte";
+    import { Drawer } from "flowbite-svelte";
     import {
-        InfoCircleSolid,
-        ArrowRightOutline,
         AlignJustifyOutline,
         SearchOutline,
     } from "flowbite-svelte-icons";
@@ -44,7 +42,7 @@
             on:click={() => (hidden1 = false)}
             class="flex items-center gap-3 text-xl uppercase h-full px-6 hover:bg-black/20 me-auto"
         >
-            <AlignJustifyOutline size="lg" class="scale-110" />
+            <AlignJustifyOutline size="xl" class="scale-110" />
         </button>
 
         <a class="text-2xl md:text-4xl font-extrabold whitespace-nowrap" href="/">
@@ -68,7 +66,7 @@
                 ? 'hover:bg-black/20'
                 : ''}"
         >
-            <SearchOutline size="lg" />
+            <SearchOutline size="xl" />
         </button>
         {#if search}
             <input

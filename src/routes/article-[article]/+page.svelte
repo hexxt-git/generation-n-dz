@@ -1,13 +1,12 @@
 <script>
     const { data } = $props();
-    console.log(data);
 </script>
 
 <main class="min-h-screen mt-20 pb-36 pt-8 px-8 max-w-[1200px] mx-auto">
     <img
         src={data.image}
         alt={data.title}
-        class="w-full aspect-video object-fit"
+        class="w-full aspect-video object-cover"
     />
     <h1 class="text-3xl uppercase mt-4"><b>ARTICLE:</b> {data.title}</h1>
     <div class="article">

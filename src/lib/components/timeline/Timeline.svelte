@@ -92,7 +92,7 @@
     }
 </script>
 
-<div class="flex relative border-t border-gray-400 mt-28">
+<div class="flex relative border-t border-gray-400 mt-24">
     {#if controlsVisible}
         <div class="relative bg-card p-4 border-r border-gray-400 w-64">
             <div class="space-y-2">
@@ -151,7 +151,7 @@
         <div
             class="relative"
             style="
-                height: calc(100vh - 8rem);
+                height: calc(100vh - 6rem);
                 width: {totalYears * yearWidth}px;
                 background-image: repeating-linear-gradient(
                     to right,
@@ -187,9 +187,10 @@
                     href="/article-{event.id}"
                 >
                     {#if event.eventWidth >= 160}
+                    {@const x = Math.floor(Math.random()*200+200)}
                         <div class="flex h-full">
                             <img
-                                src={event.image || "/image.png"}
+                                src={event.image || `https://picsum.photos/${x}/${x}`}
                                 alt={event.name}
                                 class="h-full w-1/3 max-w-48 object-cover rounded-l"
                             />

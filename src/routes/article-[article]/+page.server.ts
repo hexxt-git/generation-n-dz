@@ -2,7 +2,7 @@ export async function load({ params }) {
     const { article } = params;
 
     return {
-        image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmixjet.aero%2Fblog%2Fwp-content%2Fuploads%2F2020%2F04%2FAlgeria-min-scaled.jpg&f=1&nofb=1&ipt=f069ead6baa5f4f9b12d0d96191690d077fec5ffec3ee93fc86dd6bbcd54c082&ipo=images",
+        image: `/history-${Math.floor(Math.random()*4)}.png`,
         title: "Exploring Algeria",
         content: ` 
     <h2>Quick Facts About Algeria</h2>
