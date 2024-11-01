@@ -100,31 +100,7 @@
 
     <div class="grid grid-rows-[1fr_auto] min-h-screen">
         <slot />
-        <footer
-            class="border-t bg-card/20 py-6 px-2 lg:p-6 flex justify-between flex-col lg:flex-row items-center gap-4"
-        >
-            <div class="flex flex-wrap gap-2 justify-center">
-                <p>
-                    Made with 💖 by <a
-                        href="https://celec.club"
-                        class="text-primary"
-                        target="_blank"
-                    >
-                        CELEC
-                    </a>
-                </p>
-                |
-                <p>
-                    Hosted at
-                    <a
-                        href="https://adexcloud.dz"
-                        class="text-primary"
-                        target="_blank"
-                    >
-                        Adex technology
-                    </a>
-                </p>
-            </div>
+        
             <Select.Root
                 onSelectedChange={(newVal) => {
                     // @ts-ignore
@@ -141,7 +117,6 @@
                     <Select.Item value="system">System</Select.Item>
                 </Select.Content>
             </Select.Root>
-        </footer>
     </div>
 </Drawer>
 
