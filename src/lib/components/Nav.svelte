@@ -17,18 +17,19 @@
     let mobile = false;
     let textArea: any;
     import { onMount, onDestroy } from "svelte";
+    import { browser } from "$app/environment";
 
     function handleResize() {
-        mobile = window.innerWidth < 700;
+        if (browser) mobile = window.innerWidth < 700;
     }
 
     onMount(() => {
         handleResize();
-        window.addEventListener("resize", handleResize);
+        if (browser) window.addEventListener("resize", handleResize);
     });
 
     onDestroy(() => {
-        window.removeEventListener("resize", handleResize);
+        if (browser) window.removeEventListener("resize", handleResize);
     });
 </script>
 
@@ -50,7 +51,12 @@
             GEN-B
         </h1>
     {:else}{/if}
-    <div class="flex items-center h-full {search ? 'bg-black/20' : ''} {search && mobile ? 'w-full' : ''} ms-auto">
+    <div
+        class="flex items-center h-full {search ? 'bg-black/20' : ''} {search &&
+        mobile
+            ? 'w-full'
+            : ''} ms-auto"
+    >
         <button
             on:click={() => {
                 search = !search;
@@ -81,6 +87,7 @@
     bind:hidden={hidden1}
     id="sidebar1"
     placement="left"
+    backdrop={false}
 >
     <div class="flex items-center">
         <h5
