@@ -1,9 +1,8 @@
 <script lang="ts">
     import { Drawer } from "flowbite-svelte";
-    import {
-        AlignJustifyOutline,
-        SearchOutline,
-    } from "flowbite-svelte-icons";
+    import * as Select from "$lib/components/ui/select";
+    import { mode, setMode } from "mode-watcher";
+    import { AlignJustifyOutline, SearchOutline } from "flowbite-svelte-icons";
     import { sineInOut } from "svelte/easing";
     let hidden1 = true;
     let transitionParams = {
@@ -45,8 +44,11 @@
             <AlignJustifyOutline size="xl" class="scale-110" />
         </button>
 
-        <a class="text-2xl md:text-4xl font-extrabold whitespace-nowrap" href="/">
-            GEN-B
+        <a
+            class="logo flex items-center gap-3 md:gap-1 text-3xl md:text-4xl font-extrabold whitespace-nowrap uppercase"
+            href="/"
+        >
+            <img src="/logo.svg" alt="" class="h-11 md:h-14" />
         </a>
     {:else}{/if}
     <div
@@ -87,14 +89,66 @@
     placement="left"
     backdrop={false}
 >
-    <div class="text-lg grid space-y-2 pt-8">    
+    <div class="text-lg grid space-y-2 pt-8">
         <a class="hover:underline" href="/">Landing</a>
         <a class="hover:underline" href="/timeline">Timeline</a>
-        <a class="hover:underline" href="/article-landing">Articles</a>
+        <a
+            class="hover:underline"
+            href="/article-{Math.floor(Math.random() * 20)}">Articles</a
+        >
+    </div>
+
+    <div class="grid grid-rows-[1fr_auto] min-h-screen">
+        <slot />
+        <footer
+            class="border-t bg-card/20 py-6 px-2 lg:p-6 flex justify-between flex-col lg:flex-row items-center gap-4"
+        >
+            <div class="flex flex-wrap gap-2 justify-center">
+                <p>
+                    Made with 💖 by <a
+                        href="https://celec.club"
+                        class="text-primary"
+                        target="_blank"
+                    >
+                        CELEC
+                    </a>
+                </p>
+                |
+                <p>
+                    Hosted at
+                    <a
+                        href="https://adexcloud.dz"
+                        class="text-primary"
+                        target="_blank"
+                    >
+                        Adex technology
+                    </a>
+                </p>
+            </div>
+            <Select.Root
+                onSelectedChange={(newVal) => {
+                    // @ts-ignore
+                    if (newVal) setMode(newVal.value);
+                }}
+                selected={{ label: $mode, value: "" }}
+            >
+                <Select.Trigger class="w-36 ml-auto">
+                    <Select.Value placeholder="Theme" />
+                </Select.Trigger>
+                <Select.Content>
+                    <Select.Item value="dark">Dark</Select.Item>
+                    <Select.Item value="light">Light</Select.Item>
+                    <Select.Item value="system">System</Select.Item>
+                </Select.Content>
+            </Select.Root>
+        </footer>
     </div>
 </Drawer>
 
 <style>
+    .logo {
+        font-family: "Britanica Bold";
+    }
     .show {
         animation: showWidth 2500ms ease-out forwards;
         outline: none !important;

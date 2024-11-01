@@ -167,7 +167,7 @@
             >
                 {#each Array(Math.ceil(totalYears)) as _, i}
                     <div
-                        class="absolute top-0 h-full border-r border-gray-400 text-center text-xs text-gray-400"
+                        class="absolute top-0 pt-2 h-full border-r border-gray-400 text-center text-xs text-gray-400"
                         style="left: {i * yearWidth}px; width: {yearWidth}px;"
                     >
                         {startDate.getFullYear() + i}
@@ -176,13 +176,14 @@
             </div>
             {#each computedEvents as event}
                 <a
-                    class="absolute p-1 text-white rounded shadow-lg scale-95 overflow-hidden"
+                    class="absolute p-1 text-white rounded border shadow-lg scale-95 overflow-hidden"
                     style="
                         left: {event.startPosition}px;
                         width: {event.eventWidth}px;
                         top: {(event.row ?? 0) * rowHeight + 30}px;
                         height: {rowHeight}px;
-                        background-color: {event.color};
+                        border-color: {event.color};
+                        background: {event.color}60;
                     "
                     href="/article-{event.id}"
                 >
@@ -195,7 +196,7 @@
                                 class="h-full w-1/3 max-w-48 object-cover rounded-l"
                             />
                             <div
-                                class="p-2 w-2/3 flex flex-col justify-between"
+                                class="p-2 w-2/3 flex flex-col justify-between overflow-hidden"
                             >
                                 <div>
                                     <h4
