@@ -92,7 +92,7 @@
     }
 </script>
 
-<div class="flex relative border-t border-gray-400">
+<div class="flex relative border-t border-gray-400 mt-28">
     {#if controlsVisible}
         <div class="relative bg-card p-4 border-r border-gray-400 w-64">
             <div class="space-y-2">
@@ -138,7 +138,7 @@
 
     <button
         on:click={toggleControls}
-        class="absolute bottom-2 left-2 z-50 px-2 py-1 bg-gray-800 text-white rounded"
+        class="absolute bottom-2 left-2 z-10 px-2 py-1 bg-gray-800 text-white rounded"
     >
         {#if !controlsVisible}
             Show Controls
@@ -151,7 +151,7 @@
         <div
             class="relative"
             style="
-                height: calc(100vh - 80px);
+                height: calc(100vh - 8rem);
                 width: {totalYears * yearWidth}px;
                 background-image: repeating-linear-gradient(
                     to right,
