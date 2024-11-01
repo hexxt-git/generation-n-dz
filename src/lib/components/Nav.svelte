@@ -47,9 +47,9 @@
             <AlignJustifyOutline size="lg" class="scale-110" />
         </button>
 
-        <h1 class="text-2xl md:text-4xl font-extrabold whitespace-nowrap">
+        <a class="text-2xl md:text-4xl font-extrabold whitespace-nowrap" href="/">
             GEN-B
-        </h1>
+        </a>
     {:else}{/if}
     <div
         class="flex items-center h-full {search ? 'bg-black/20' : ''} {search &&

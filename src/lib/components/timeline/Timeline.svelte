@@ -14,60 +14,29 @@
     let zoomLevel = 1;
     const minZoomLevel = 0.5;
     const maxZoomLevel = 2;
-    const baseYearWidth = 100;
+    const baseYearWidth = 170;
     $: yearWidth = baseYearWidth * zoomLevel;
 
-    // Map categories to colors
     const categoryColorMap: { [key: string]: string } = {
-        political: "#f87171",
-        sports: "#34d399",
+        social: "#f87171",
         war: "#a3a3a3",
+        politics: "#3b82f6",
+        economics: "#34d399",
+        culture: "#fbbf24",
         arts: "#c084fc",
-        scientific: "#60a5fa",
+        sports: "#89fb89",
+        health: "#ffbb33",
     };
 
-    const events: Event[] = new Array(20)
-        .fill(0)
-        .map((_, index) => {
-            const from = new Date(
-                1950 + Math.random() * 60,
-                Math.random() * 12,
-                Math.random() * 28
-            );
-            const to = new Date(
-                from.getTime() +
-                    (Math.random() + 0.3) * 1000 * 60 * 60 * 24 * 365 * 4
-            );
-            const category = [
-                "political",
-                "sports",
-                "war",
-                "arts",
-                "scientific",
-            ][Math.floor(Math.random() * 5)];
-            return {
-                id: index,
-                from,
-                to,
-                name: "Event " + index,
-                description: "This is a brief description of Event " + index + ".",
-                image: "https://via.placeholder.com/150",
-                category,
-                color: categoryColorMap[category],
-            };
-        })
-        .sort((a, b) => a.from.getTime() - b.from.getTime());
+    export let events: Event[];
 
-    // Extract unique categories
     const categories = Array.from(new Set(events.map((e) => e.category)));
     let selectedCategories = [...categories];
 
-    // Filtered events based on selected categories
     $: filteredEvents = events.filter((e) =>
-        selectedCategories.includes(e.category)
+        selectedCategories.includes(e.category),
     );
 
-    // Assign rows to events to avoid collisions
     const rowHeight = 120;
     function assignRows(eventList: Event[]) {
         const rows: Date[] = [];
@@ -76,23 +45,39 @@
             for (let i = 0; i < rows.length; i++) {
                 if (event.from.getTime() >= rows[i].getTime()) {
                     event.row = i;
-                    rows[i] = event.to;
+                    let maxedTo = new Date(event.to);
+                    maxedTo.setFullYear(maxedTo.getFullYear() + 1);
+                    rows[i] = maxedTo;
                     placed = true;
                     break;
                 }
             }
             if (!placed) {
-                rows.push(event.to);
+                let maxedTo = new Date(event.to);
+                maxedTo.setFullYear(maxedTo.getFullYear() + 1);
+                rows.push(maxedTo);
                 event.row = rows.length - 1;
             }
         });
     }
     $: assignRows(filteredEvents);
 
-    // Calculate timeline range
-    const startYear = Math.min(...events.map((e) => e.from.getFullYear()));
-    const endYear = Math.max(...events.map((e) => e.to.getFullYear()));
-    const totalYears = endYear - startYear + 1;
+    const millisecondsPerYear = 1000 * 60 * 60 * 24 * 365.25;
+    $: startDate = new Date(Math.min(...events.map((e) => e.from.getTime())));
+    $: endDate = new Date(Math.max(...events.map((e) => e.to.getTime())));
+    $: totalYears =
+        (endDate.getTime() - startDate.getTime()) / millisecondsPerYear;
+
+    $: computedEvents = filteredEvents.map((event) => {
+        const startPosition =
+            ((event.from.getTime() - startDate.getTime()) /
+                millisecondsPerYear) *
+            yearWidth;
+        const durationMs = event.to.getTime() - event.from.getTime();
+        const eventWidth =
+            Math.max(1, durationMs / millisecondsPerYear) * yearWidth;
+        return { ...event, startPosition, eventWidth };
+    });
 
     function zoomIn() {
         if (zoomLevel < maxZoomLevel) zoomLevel += 0.1;
@@ -101,15 +86,13 @@
         if (zoomLevel > minZoomLevel) zoomLevel -= 0.1;
     }
 
-    // Toggle control panel visibility
     let controlsVisible = true;
     function toggleControls() {
         controlsVisible = !controlsVisible;
     }
 </script>
 
-<div class="flex relative">
-    <!-- Control Panel -->
+<div class="flex relative border-t border-gray-400">
     {#if controlsVisible}
         <div class="relative bg-card p-4 border-r border-gray-400 w-64">
             <div class="space-y-2">
@@ -140,7 +123,9 @@
                             <span class="flex items-center">
                                 <span
                                     class="w-3 h-3 mr-2 rounded"
-                                    style="background-color: { categoryColorMap[category] }"
+                                    style="background-color: {categoryColorMap[
+                                        category
+                                    ]}"
                                 ></span>
                                 {category}
                             </span>
@@ -151,7 +136,6 @@
         </div>
     {/if}
 
-    <!-- Show/Hide Controls Button -->
     <button
         on:click={toggleControls}
         class="absolute bottom-2 left-2 z-50 px-2 py-1 bg-gray-800 text-white rounded"
@@ -163,7 +147,6 @@
         {/if}
     </button>
 
-    <!-- Timeline -->
     <div class="flex-1 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
         <div
             class="relative"
@@ -179,40 +162,63 @@
                 );
             "
         >
-            <!-- Time scale -->
-            <div class="absolute top-0 left-0 h-[30px] w-full border-b border-gray-400">
-                {#each Array(totalYears) as _, i}
+            <div
+                class="absolute top-0 left-0 h-[30px] w-full border-b border-gray-400"
+            >
+                {#each Array(Math.ceil(totalYears)) as _, i}
                     <div
                         class="absolute top-0 h-full border-r border-gray-400 text-center text-xs text-gray-400"
                         style="left: {i * yearWidth}px; width: {yearWidth}px;"
                     >
-                        {startYear + i}
+                        {startDate.getFullYear() + i}
                     </div>
                 {/each}
             </div>
-            <!-- Events -->
-            {#each filteredEvents as event}
-                <div
-                    class="absolute p-2 text-white rounded shadow-lg scale-95"
+            {#each computedEvents as event}
+                <a
+                    class="absolute p-1 text-white rounded shadow-lg scale-95 overflow-hidden"
                     style="
-                        left: {(event.from.getFullYear() - startYear) * yearWidth}px;
-                        width: {(event.to.getFullYear() - event.from.getFullYear()) * yearWidth}px;
+                        left: {event.startPosition}px;
+                        width: {event.eventWidth}px;
                         top: {(event.row ?? 0) * rowHeight + 30}px;
                         height: {rowHeight}px;
                         background-color: {event.color};
                     "
+                    href="/article-{event.id}"
                 >
-                    <div class="flex h-full">
-                        <img src="{event.image}" alt="{event.name}" class="h-full w-1/3 object-cover rounded-l">
-                        <div class="p-2 w-2/3 flex flex-col justify-between">
-                            <div>
-                                <h4 class="font-bold text-lg">{event.name}</h4>
-                                <p class="text-sm overflow-hidden">{event.description}</p>
+                    {#if event.eventWidth >= 160}
+                        <div class="flex h-full">
+                            <img
+                                src={event.image || "/image.png"}
+                                alt={event.name}
+                                class="h-full w-1/3 max-w-48 object-cover rounded-l"
+                            />
+                            <div
+                                class="p-2 w-2/3 flex flex-col justify-between"
+                            >
+                                <div>
+                                    <h4
+                                        class="font-bold text-lg overflow-hidden"
+                                    >
+                                        {event.name}
+                                    </h4>
+                                    <p class="text-sm overflow-hidden">
+                                        {event.description}
+                                    </p>
+                                </div>
+                                <span class="text-blue-700 self-end">
+                                    Read more
+                                </span>
                             </div>
-                            <a href="/events/{event.id}" class="text-blue-200 underline self-end">Read more</a>
                         </div>
-                    </div>
-                </div>
+                    {:else}
+                        <img
+                            src={event.image || "/image.png"}
+                            alt={event.name}
+                            class="h-full w-full object-cover rounded"
+                        />
+                    {/if}
+                </a>
             {/each}
         </div>
     </div>
