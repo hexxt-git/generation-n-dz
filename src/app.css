@@ -1,0 +1,77 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+    :root {
+      --background: 150 8% 95%;
+      --foreground: 150 8% 5%;
+  
+      --card: 150 8% 95%;
+      --card-foreground: 150 8% 5%;
+  
+      --popover: 150 8% 95%;
+      --popover-foreground: 150 8% 5%;
+  
+      --primary: 147 63% 51%;
+      --primary-foreground: 120 9% 2%;
+  
+      --secondary: 144 11% 91%;
+      --secondary-foreground: 150 8% 5%;
+  
+      --muted: 135 9% 91%;
+      --muted-foreground: 149 9% 45%;
+  
+      --accent: 144 11% 91%;
+      --accent-foreground: 150 8% 5%;
+  
+      --destructive: 0 84% 60%;
+      --destructive-foreground: 0 0% 98%;
+  
+      --border: 150 9% 57%;
+      --input: 147 9% 81%;
+      --ring: 147 36% 72%;
+  
+      --radius: 0.5rem;
+    }
+    
+    .dark {
+      --background: 160 7% 8%;
+      --foreground: 180 9% 98%;
+  
+      --card: 160 6% 10%;
+      --card-foreground: 180 9% 98%;
+  
+      --popover: 160 6% 10%;
+      --popover-foreground: 180 9% 98%;
+  
+      --primary: 152 62% 39%;
+      --primary-foreground: 120 9% 2%;
+  
+      --secondary: 150 8% 19%;
+      --secondary-foreground: 180 9% 98%;
+  
+      --muted: 153 7% 29%;
+      --muted-foreground: 153 8% 49%;
+  
+      --accent: 153 71% 19%;
+      --accent-foreground: 180 9% 98%;
+  
+      --destructive: 0 84% 60%;
+      --destructive-foreground: 0 0% 98%;
+  
+      --border: 156 8% 27%;
+      --input: 150 9% 18%;
+      --ring: 152 62% 40%;
+    }
+  }
+
+* {
+    box-sizing: border-box;
+    @apply border-border
+}
+
+body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+}
