@@ -100,23 +100,23 @@
 
     <div class="grid grid-rows-[1fr_auto] min-h-screen">
         <slot />
-        
-            <Select.Root
-                onSelectedChange={(newVal) => {
-                    // @ts-ignore
-                    if (newVal) setMode(newVal.value);
-                }}
-                selected={{ label: $mode, value: "" }}
-            >
-                <Select.Trigger class="w-36 ml-auto">
-                    <Select.Value placeholder="Theme" />
-                </Select.Trigger>
-                <Select.Content>
-                    <Select.Item value="dark">Dark</Select.Item>
-                    <Select.Item value="light">Light</Select.Item>
-                    <Select.Item value="system">System</Select.Item>
-                </Select.Content>
-            </Select.Root>
+
+        <Select.Root
+            onSelectedChange={(newVal) => {
+                // @ts-ignore
+                if (newVal) setMode(newVal.value);
+            }}
+            selected={{ label: $mode, value: "" }}
+        >
+            <Select.Trigger class="w-36 ml-auto">
+                <Select.Value placeholder="Theme" />
+            </Select.Trigger>
+            <Select.Content>
+                <Select.Item value="dark">Dark</Select.Item>
+                <Select.Item value="light">Light</Select.Item>
+                <Select.Item value="system">System</Select.Item>
+            </Select.Content>
+        </Select.Root>
     </div>
 </Drawer>
 
