@@ -2,6 +2,14 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@font-face {
+  font-family: 'Britanica';
+  src: url('Britanica Expanded Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 @layer base {
     :root {
       --background: 150 8% 95%;
@@ -36,10 +44,10 @@
     }
     
     .dark {
-      --background: 160 7% 8%;
+      --background: 160 18% 16%;
       --foreground: 180 9% 98%;
   
-      --card: 160 6% 10%;
+      --card: 162 18% 14%;
       --card-foreground: 180 9% 98%;
   
       --popover: 160 6% 10%;
