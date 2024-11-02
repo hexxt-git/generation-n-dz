@@ -38,24 +38,30 @@
     );
 
     const rowHeight = 120;
+    const minimumDurationMs = 1000 * 60 * 60 * 24 * 365; // 1 year in milliseconds
+
     function assignRows(eventList: Event[]) {
+        // Sort events by start date
+        eventList.sort((a, b) => a.from.getTime() - b.from.getTime());
+
         const rows: Date[] = [];
         eventList.forEach((event) => {
+            // Calculate effective end date with minimum duration
+            const minEndDate = new Date(event.from.getTime() + minimumDurationMs);
+            const effectiveEndDate = event.to.getTime() > minEndDate.getTime() ? event.to : minEndDate;
+            event.to = effectiveEndDate;
+
             let placed = false;
             for (let i = 0; i < rows.length; i++) {
                 if (event.from.getTime() >= rows[i].getTime()) {
                     event.row = i;
-                    let maxedTo = new Date(event.to);
-                    maxedTo.setFullYear(maxedTo.getFullYear() + 1);
-                    rows[i] = maxedTo;
+                    rows[i] = event.to;
                     placed = true;
                     break;
                 }
             }
             if (!placed) {
-                let maxedTo = new Date(event.to);
-                maxedTo.setFullYear(maxedTo.getFullYear() + 1);
-                rows.push(maxedTo);
+                rows.push(event.to);
                 event.row = rows.length - 1;
             }
         });
@@ -75,7 +81,7 @@
             yearWidth;
         const durationMs = event.to.getTime() - event.from.getTime();
         const eventWidth =
-            Math.max(1, durationMs / millisecondsPerYear) * yearWidth;
+            Math.max(minimumDurationMs, durationMs) / millisecondsPerYear * yearWidth;
         return { ...event, startPosition, eventWidth };
     });
 
@@ -147,7 +153,7 @@
         {/if}
     </button>
 
-    <div class="flex-1 overflow-x-scroll overflow-y-hidden whitespace-nowrap">
+    <div class="flex-1 overflow-x-scroll overflow-y-clip whitespace-nowrap">
         <div
             class="relative"
             style="
@@ -188,10 +194,9 @@
                     href="/article-{event.id}"
                 >
                     {#if event.eventWidth >= 160}
-                    {@const x = Math.floor(Math.random()*200+200)}
                         <div class="flex h-full">
                             <img
-                                src={event.image || `https://picsum.photos/${x}/${x}`}
+                                src={event.image || `/history-${Math.floor(Math.random()*10)}.png`}
                                 alt={event.name}
                                 class="h-full w-1/3 max-w-48 object-cover rounded-l"
                             />
